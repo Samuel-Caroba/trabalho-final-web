@@ -1,12 +1,12 @@
 # trabalho-final-web
 Trabalho final da disciplina de WEB
 # Os Carobas
-#📊 Site de Contabilidade
-##📝 Descrição
+📊 Site de Contabilidade
+📝 Descrição
 
 Este projeto é um site desenvolvido para um escritório de contabilidade, com foco em apresentar serviços, facilitar o contato com clientes e permitir a atualização de informações de forma prática. O objetivo é oferecer uma plataforma clara, profissional e acessível, que ajude na comunicação entre o contador e seus clientes.
 
-##⚙️ Principais Funcionalidades
+⚙️ Principais Funcionalidades
 
 Página inicial com apresentação da contabilidade.
 
