@@ -1,0 +1,96 @@
+/* ===== Página Administrativa de Serviços ===== */
+.admin-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+}
+
+.admin-box {
+  background: var(--branco);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.admin-box h2 {
+  margin-bottom: 20px;
+  color: var(--vermelho);
+  text-align: center;
+}
+
+.admin-box label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--preto);
+}
+
+.admin-box input,
+.admin-box textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.admin-box button {
+  padding: 12px;
+  background: var(--amarelo);
+  color: var(--preto);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.admin-box button:hover {
+  background: var(--vermelho);
+  color: var(--branco);
+}
+
+.lista-servicos {
+  margin-top: 30px;
+}
+
+.lista-servicos h3 {
+  margin-bottom: 10px;
+  color: var(--vermelho);
+}
+
+.lista-servicos ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.lista-servicos li {
+  background: #f0f0f0;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lista-servicos button.editar {
+  background: var(--amarelo);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.lista-servicos button.editar:hover {
+  background: var(--vermelho);
+  color: var(--branco);
+}

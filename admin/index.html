@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administração de Serviços - Caroba Contabilidade</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin-servicos.css">
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo">
+      <img src="images/image.png" alt="Caroba Contabilidade">
+    </div>
+    <nav>
+      <ul>
+        <li><a href="/index.html">Início</a></li>
+        <li><a href="/servicos.html">Serviços</a></li>
+        <li><a href="login.html">Conectar</a></li>
+        <li><a href="/contrato.html">Contrato</a></li>
+        <li><a href="/admin-servicos.html" class="active">Admin Serviços</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main>
+    <div class="admin-container">
+      <div class="admin-box">
+        <h2>Gerenciar Serviços</h2>
+
+        <!-- Formulário para adicionar/editar serviço -->
+        <form>
+          <label for="nomeServico">Nome do Serviço</label>
+          <input type="text" id="nomeServico" placeholder="Ex: Abrir CNPJ" required>
+
+          <label for="documentos">Documentos Necessários</label>
+          <textarea id="documentos" placeholder="Liste os documentos separados por vírgula" rows="4" required></textarea>
+
+          <label for="valor">Valor (R$)</label>
+          <input type="number" id="valor" placeholder="Ex: 500" required>
+
+          <button type="submit">Salvar Serviço</button>
+        </form>
+
+        <!-- Lista de serviços existentes -->
+        <div class="lista-servicos">
+          <h3>Serviços Cadastrados</h3>
+          <ul>
+            <li>Abrir CNPJ - R$ 500 <button class="editar">Editar</button></li>
+            <li>Pagar IPVA - R$ 150 <button class="editar">Editar</button></li>
+            <li>Regularizar MEI - R$ 200 <button class="editar">Editar</button></li>
+            <li>Declaração IRPF - R$ 350 <button class="editar">Editar</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>📌 Contato: Instagram | WhatsApp | Endereço</p>
+  </footer>
+</body>
+</html>
