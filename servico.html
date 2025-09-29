@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serviços - Caroba Contabilidade</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo">
+      <img src="images/image.png" alt="Caroba Contabilidade">
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="servicos.html" class="active">Serviços</a></li>
+        <li><a href="login.html">Conectar</a></li>
+        <li><a href="/contrato.html">Contrato</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main>
+    <!-- Bloco de seleção -->
+    <div class="servicos-box">
+      <h2>Escolha um serviço</h2>
+      <select id="servicoSelect">
+        <option value="">-- Selecione --</option>
+        <option value="cnpj">Abrir CNPJ</option>
+        <option value="ipva">Pagar IPVA</option>
+        <option value="mei">Regularizar MEI</option>
+        <option value="irpf">Declaração de IRPF</option>
+      </select>
+    </div>
+
+    <!-- Bloco de informações -->
+    <div class="info-box" id="infoBox">
+      <h2>Informações</h2>
+      <p>Selecione um serviço para ver os documentos necessários e o valor.</p>
+
+      <!-- Serviço: Abrir CNPJ -->
+      <div class="servico" id="cnpj" style="display:none;">
+        <h3>Abrir CNPJ</h3>
+        <ul>
+          <li>RG e CPF do responsável</li>
+          <li>Comprovante de residência</li>
+          <li>Título de eleitor</li>
+        </ul>
+        <p class="valor">Valor: R$ 500,00</p>
+      </div>
+
+      <!-- Serviço: Pagar IPVA -->
+      <div class="servico" id="ipva" style="display:none;">
+        <h3>Pagar IPVA</h3>
+        <ul>
+          <li>CRLV (documento do veículo)</li>
+          <li>CNH do proprietário</li>
+        </ul>
+        <p class="valor">Valor: R$ 150,00</p>
+      </div>
+
+      <!-- Serviço: Regularizar MEI -->
+      <div class="servico" id="mei" style="display:none;">
+        <h3>Regularizar MEI</h3>
+        <ul>
+          <li>Certificado MEI</li>
+          <li>Declarações anteriores</li>
+        </ul>
+        <p class="valor">Valor: R$ 200,00</p>
+      </div>
+
+      <!-- Serviço: Declaração IRPF -->
+      <div class="servico" id="irpf" style="display:none;">
+        <h3>Declaração de IRPF</h3>
+        <ul>
+          <li>Informes de rendimentos</li>
+          <li>Comprovante de residência</li>
+          <li>Dependentes (se houver)</li>
+        </ul>
+        <p class="valor">Valor: R$ 350,00</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>📌 Contato: Instagram | WhatsApp | Endereço</p>
+  </footer>
+
+  <!-- Script para mostrar serviços -->
+  <script>
+    const select = document.getElementById("servicoSelect");
+    const servicos = document.querySelectorAll(".servico");
+
+    select.addEventListener("change", function() {
+      servicos.forEach(s => s.style.display = "none");
+      const escolhido = document.getElementById(this.value);
+      if (escolhido) escolhido.style.display = "block";
+    });
+  </script>
+</body>
+</html>
