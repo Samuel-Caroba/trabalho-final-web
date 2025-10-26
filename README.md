@@ -20,6 +20,14 @@ Painel administrativo para atualização de valores e informações.
 🎨 Protótipo no Figma
 
 Confira o design do projeto no Figma através do link: https://www.figma.com/design/pZM17XLmGGp4WDJTov4mdL/Sem-t%C3%ADtulo?node-id=0-1&p=f&t=Lswej3JoymOuEp0d-0
+
+ 🗂 Banco de Dados
+
+Todos os arquivos relacionados ao banco de dados:
+
+DDL.sql: https://github.com/Samuel-Caroba/trabalho-final-web/blob/main/db/DDL.sql
+DML.sql: https://github.com/Samuel-Caroba/trabalho-final-web/blob/main/db/DML.sql
+
 ### Integrantes
 
 Bruno Luan Ferreira Pardinho, Otávio Silva de Oliveira, Rhyan Silva Ribeiro, Samuel Rodrigues Caroba Silva.
