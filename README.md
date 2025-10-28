@@ -27,6 +27,8 @@ Todos os arquivos relacionados ao banco de dados:
 
 DDL.sql: https://github.com/Samuel-Caroba/trabalho-final-web/blob/main/db/DDL.sql
 DML.sql: https://github.com/Samuel-Caroba/trabalho-final-web/blob/main/db/DML.sql
+Conceitual: https://github.com/Samuel-Caroba/trabalho-final-web/blob/main/db/Modelo_Conceitual.png
+Logico: https://github.com/Samuel-Caroba/trabalho-final-web/blob/main/db/Modelo_Logico.png
 
 ### Integrantes
 
