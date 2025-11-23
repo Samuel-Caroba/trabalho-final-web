@@ -19,7 +19,6 @@
         <li><a href="/servicos.html">Serviços</a></li>
         <li><a href="/admin/login.html">Conectar</a></li>
         <li><a href="/contrato.html">Contrato</a></li>
-        <li><a href="/admin-servicos.html" class="active">Admin Serviços</a></li>
       </ul>
     </nav>
   </header>
@@ -30,30 +29,41 @@
       <div class="admin-box">
         <h2>Gerenciar Serviços</h2>
 
-        <!-- Formulário para adicionar/editar serviço -->
-        <form>
-          <label for="nomeServico">Nome do Serviço</label>
-          <input type="text" id="nomeServico" placeholder="Ex: Abrir CNPJ" required>
-
-          <label for="documentos">Documentos Necessários</label>
-          <textarea id="documentos" placeholder="Liste os documentos separados por vírgula" rows="4" required></textarea>
-
-          <label for="valor">Valor (R$)</label>
-          <input type="number" id="valor" placeholder="Ex: 500" required>
-
-          <button type="submit">Salvar Serviço</button>
-        </form>
-
         <!-- Lista de serviços existentes -->
         <div class="lista-servicos">
           <h3>Serviços Cadastrados</h3>
           <ul>
-            <li>Abrir CNPJ - R$ 500 <button class="editar">Editar</button></li>
-            <li>Pagar IPVA - R$ 150 <button class="editar">Editar</button></li>
-            <li>Regularizar MEI - R$ 200 <button class="editar">Editar</button></li>
-            <li>Declaração IRPF - R$ 350 <button class="editar">Editar</button></li>
+            <li>
+              Abrir CNPJ - R$ 500 
+              <div>
+                <button class="editar"><a href="/admin/editar.html">Editar</a></button>
+                <button class="editar" style="background: red; color: white;">Excluir</button>
+              </div>
+            </li>
+            <li>
+              Pagar IPVA - R$ 150 
+              <div>
+                <button class="editar"><a href="/admin/editar.html">Editar</a></button>
+                <button class="editar" style="background: red; color: white;">Excluir</button>
+              </div>
+            </li>
+            <li>
+              Regularizar MEI - R$ 200 
+              <div>
+                <button class="editar"><a href="/admin/editar.html">Editar</a></button>
+                <button class="editar" style="background: red; color: white;">Excluir</button>
+              </div>
+            </li>
+            <li>
+              Declaração IRPF - R$ 350 
+              <div>
+                <button class="editar"> <a href="/admin/editar.html">Editar</a></button>
+                <button class="editar" style="background: red; color: white;">Excluir</button>
+              </div>
+            </li>
           </ul>
         </div>
+
       </div>
     </div>
   </main>
