@@ -1,46 +1,120 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - Caroba Contabilidade</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .login-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-box {
+      background: var(--branco);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: var(--vermelho);
+    }
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background: var(--amarelo);
+      color: var(--preto);
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .login-box button:hover {
+      background: var(--vermelho);
+      color: var(--branco);
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-  <!-- Cabeçalho -->
   <header>
     <div class="logo">
-      <img src="/images/image.png" alt="Caroba Contabilidade">
+      <img src="/images/image.png" alt="Caroba Contabilidade" />
     </div>
     <nav>
       <ul>
         <li><a href="/index.html">Início</a></li>
         <li><a href="/servico.html">Serviços</a></li>
-        <li><a href="/admin/login.html" class="active">Conectar</a></li>
-        <li><a href="/contrato.html">Contrato</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Área de Login -->
-  <main>
+  <main class="login-container">
     <div class="login-box">
-      <h2>Área do Cliente</h2>
-      <form>
-        <label for="usuario">Usuário ou Email</label>
-        <input type="text" id="usuario" placeholder="Digite seu usuário ou email">
-
-        <label for="senha">Senha</label>
-        <input type="password" id="senha" placeholder="Digite sua senha">
-
-        <button type="submit">Conectar</button>
+      <h2>Área Administrativa</h2>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="senha" placeholder="Senha" required />
+        <button type="submit">Entrar</button>
       </form>
+      <div id="errorMsg" class="error"></div>
     </div>
   </main>
 
-  <!-- Rodapé -->
   <footer>
     <p>📌 Contato: Instagram | WhatsApp | Endereço</p>
   </footer>
+
+  <script>
+    const API_URL = "https://back-end-tf-web-gamma.vercel.app";
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      const errorMsg = document.getElementById("errorMsg");
+      errorMsg.textContent = "";
+
+      try {
+        const res = await fetch(`${API_URL}/administrador/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, senha })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem("adminLogado", "true");
+          window.location.href = "/admin/index.html";
+        } else {
+          errorMsg.textContent = data.erro || "Credenciais inválidas.";
+        }
+      } catch (err) {
+        errorMsg.textContent = "Erro de conexão. Verifique sua internet.";
+      }
+    });
+  </script>
 </body>
 </html>

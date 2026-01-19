@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Editar Serviço - Caroba Contabilidade</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/admin-servicos.css">
-
+  <link rel="stylesheet" href="/css/style.css" />
   <style>
     .container {
       max-width: 600px;
@@ -16,13 +14,11 @@
       padding: 25px;
       border: 1px solid #ddd;
     }
-
     label {
       font-weight: bold;
       margin-top: 12px;
       display: block;
     }
-
     input, textarea {
       width: 100%;
       padding: 10px;
@@ -30,36 +26,37 @@
       border: 1px solid #bbb;
       margin-top: 5px;
     }
-
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-top: 12px;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+    }
     .btn {
       padding: 10px 18px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       margin-top: 20px;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
     }
-
-    .btn-primary {
-      background: #005bbb;
-      color: #fff;
-    }
-
-    .btn-secondary {
-      background: #777;
-      color: #fff;
-      margin-left: 10px;
-    }
+    .btn-primary { background: #005bbb; color: #fff; }
+    .btn-secondary { background: #777; color: #fff; margin-left: 10px; }
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">
-      <img src="/images/image.png" alt="Caroba Contabilidade">
+      <img src="/images/image.png" alt="Caroba Contabilidade" />
     </div>
     <nav>
       <ul>
-        <li><a href="/admin-servicos.html">Voltar</a></li>
+        <li><a href="/admin/index.html">Voltar</a></li>
       </ul>
     </nav>
   </header>
@@ -67,19 +64,27 @@
   <main>
     <div class="container">
       <h2>Editar Serviço</h2>
+      <form id="form-edicao">
+        <input type="hidden" id="idServico" />
 
-      <form>
         <label for="nomeServico">Nome do Serviço</label>
-        <input type="text" id="nomeServico" placeholder="Ex: Abrir CNPJ" required>
+        <input type="text" id="nomeServico" required />
 
-        <label for="documentos">Documentos Necessários</label>
-        <textarea id="documentos" placeholder="Liste os documentos separados por vírgula" rows="5" required></textarea>
+        <label for="descricao">Documentos Necessários (Descrição)</label>
+        <textarea id="descricao" rows="5" required></textarea>
 
         <label for="valor">Valor (R$)</label>
-        <input type="number" id="valor" placeholder="Ex: 500" required>
+        <input type="number" id="valor" step="0.01" min="0" required />
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="popular" />
+          <label for="popular" style="margin: 0; font-weight: normal;">
+            Marcar como serviço popular (aparecerá na página inicial)
+          </label>
+        </div>
 
         <button type="submit" class="btn btn-primary">Salvar</button>
-        <a href="/admin-servicos.html" class="btn btn-secondary">Cancelar</a>
+        <a href="/admin/index.html" class="btn btn-secondary">Cancelar</a>
       </form>
     </div>
   </main>
@@ -88,5 +93,64 @@
     <p>📌 Contato: Instagram | WhatsApp | Endereço</p>
   </footer>
 
+  <script>
+    const API_URL = "https://back-end-tf-web-gamma.vercel.app";
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
+
+    if (!id) {
+      alert("ID do serviço não informado.");
+      window.location.href = "/admin/index.html";
+    }
+
+    // Carregar dados do serviço
+    async function carregarServico() {
+      try {
+        const res = await fetch(`${API_URL}/servico/${id}`);
+        if (!res.ok) throw new Error("Serviço não encontrado");
+        const servico = await res.json();
+
+        document.getElementById("idServico").value = servico.id_servico;
+        document.getElementById("nomeServico").value = servico.nome;
+        document.getElementById("descricao").value = servico.descricao || "";
+        document.getElementById("valor").value = servico.valor;
+        document.getElementById("popular").checked = servico.popular === true;
+      } catch (err) {
+        alert("Erro ao carregar serviço: " + err.message);
+        window.location.href = "/admin/index.html";
+      }
+    }
+
+    // Salvar alterações
+    document.getElementById("form-edicao").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const servico = {
+        nome: document.getElementById("nomeServico").value,
+        descricao: document.getElementById("descricao").value,
+        valor: parseFloat(document.getElementById("valor").value),
+        popular: document.getElementById("popular").checked
+      };
+
+      try {
+        await fetch(`${API_URL}/servico/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(servico)
+        });
+        alert("Serviço atualizado com sucesso!");
+        window.location.href = "/admin/index.html";
+      } catch (err) {
+        alert("Erro ao salvar: " + err.message);
+      }
+    });
+
+    carregarServico();
+  </script>
+  <script>
+  if (!localStorage.getItem("adminLogado")) {
+    alert("Acesso restrito. Faça login primeiro.");
+    window.location.href = "/admin/login.html";
+  }
+</script>
 </body>
 </html>

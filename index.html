@@ -1,33 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Caroba Contabilidade</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    /* Estilos extras só para a página inicial */
+    .hero {
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .destaques {
+      padding: 40px 20px;
+      width: 100%;
+    }
+
+    .destaques h2 {
+      color: var(--vermelho);
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .servicos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .servico-card {
+      background: var(--branco);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .servico-card h3 {
+      color: var(--vermelho);
+      margin-bottom: 10px;
+    }
+
+    .valor {
+      font-weight: bold;
+      color: #047857;
+      display: block;
+      margin-top: 8px;
+    }
+
+    /* Botão preto para "Ver Serviços" */
+    .btn-preto {
+      background: var(--preto);
+      color: var(--branco);
+    }
+    .btn-preto:hover {
+      background: var(--vermelho);
+    }
+  </style>
 </head>
 <body>
   <!-- Cabeçalho -->
   <header>
     <div class="logo">
-      <img src="images/image.png" alt="Caroba Contabilidade">
+      <img src="/images/image.png" alt="Caroba Contabilidade" />
     </div>
     <nav>
       <ul>
         <li><a href="/index.html">Início</a></li>
         <li><a href="/servico.html">Serviços</a></li>
-        <li><a href="/admin/login.html">Conectar</a></li>
-        <li><a href="/contrato.html">Contrato</a></li>
       </ul>
     </nav>
   </header>
 
   <!-- Conteúdo Principal -->
   <main>
-    <section class="welcome">
+    <section class="welcome hero">
       <h1>Bem-vindo à Caroba Contabilidade</h1>
       <p>Cuidamos da sua contabilidade para você focar no crescimento da sua empresa.</p>
-      <a href="servico.html" class="btn">Área do Cliente</a>
+      <a href="/servico.html" class="btn btn-preto">Ver Serviços</a>
+    </section>
+
+    <section class="destaques">
+      <h2>Serviços Recomendados</h2>
+      <div id="servicos-populares" class="servicos-grid">
+        <p>Carregando serviços...</p>
+      </div>
     </section>
   </main>
 
@@ -35,5 +94,40 @@
   <footer>
     <p>📌 Contato: Instagram | WhatsApp | Endereço</p>
   </footer>
+
+  <script>
+    // ✅ Corrigido: removido espaço extra na URL
+    const API_URL = "https://back-end-tf-web-gamma.vercel.app";
+
+    async function carregarServicosPopulares() {
+      try {
+        // ✅ Agora busca só os populares
+        const res = await fetch(`${API_URL}/servico/populares`);
+        if (!res.ok) throw new Error("Erro ao buscar serviços populares");
+        const populares = await res.json();
+
+        const container = document.getElementById("servicos-populares");
+
+        if (populares.length === 0) {
+          container.innerHTML = "<p>Nenhum serviço marcado como popular no momento.</p>";
+          return;
+        }
+
+        container.innerHTML = populares.map(s => `
+          <div class="servico-card">
+            <h3>${s.nome}</h3>
+            <p>${s.descricao || "Serviço essencial para seu negócio."}</p>
+            <span class="valor">R$ ${parseFloat(s.valor).toFixed(2)}</span>
+            <a href="/servico.html" class="btn" style="margin-top: 12px; display: inline-block; font-size: 14px;">Saiba Mais</a>
+          </div>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+        document.getElementById("servicos-populares").innerHTML = `<p>Erro ao carregar serviços: ${err.message}</p>`;
+      }
+    }
+
+    carregarServicosPopulares();
+  </script>
 </body>
 </html>

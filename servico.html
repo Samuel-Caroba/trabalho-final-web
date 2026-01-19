@@ -1,87 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Serviços - Caroba Contabilidade</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
   <!-- Cabeçalho -->
   <header>
     <div class="logo">
-      <img src="/images/image.png" alt="Caroba Contabilidade">
+      <img src="/images/image.png" alt="Caroba Contabilidade" />
     </div>
     <nav>
       <ul>
         <li><a href="/index.html">Início</a></li>
-        <li><a href="/servicos.html" class="active">Serviços</a></li>
-        <li><a href="/admin/login.html">Conectar</a></li>
-        <li><a href="/contrato.html">Contrato</a></li>
+        <li><a href="/servico.html">Serviços</a></li>
       </ul>
     </nav>
   </header>
 
   <!-- Conteúdo Principal -->
   <main>
-    <!-- Bloco de seleção -->
     <div class="servicos-box">
       <h2>Escolha um serviço</h2>
       <select id="servicoSelect">
         <option value="">-- Selecione --</option>
-        <option value="cnpj">Abrir CNPJ</option>
-        <option value="ipva">Pagar IPVA</option>
-        <option value="mei">Regularizar MEI</option>
-        <option value="irpf">Declaração de IRPF</option>
       </select>
     </div>
 
-    <!-- Bloco de informações -->
     <div class="info-box" id="infoBox">
       <h2>Informações</h2>
-      <p>Selecione um serviço para ver os documentos necessários e o valor.</p>
-
-      <!-- Serviço: Abrir CNPJ -->
-      <div class="servico" id="cnpj" style="display:none;">
-        <h3>Abrir CNPJ</h3>
-        <ul>
-          <li>RG e CPF do responsável</li>
-          <li>Comprovante de residência</li>
-          <li>Título de eleitor</li>
-        </ul>
-        <p class="valor">Valor: R$ 500,00</p>
-      </div>
-
-      <!-- Serviço: Pagar IPVA -->
-      <div class="servico" id="ipva" style="display:none;">
-        <h3>Pagar IPVA</h3>
-        <ul>
-          <li>CRLV (documento do veículo)</li>
-          <li>CNH do proprietário</li>
-        </ul>
-        <p class="valor">Valor: R$ 150,00</p>
-      </div>
-
-      <!-- Serviço: Regularizar MEI -->
-      <div class="servico" id="mei" style="display:none;">
-        <h3>Regularizar MEI</h3>
-        <ul>
-          <li>Certificado MEI</li>
-          <li>Declarações anteriores</li>
-        </ul>
-        <p class="valor">Valor: R$ 200,00</p>
-      </div>
-
-      <!-- Serviço: Declaração IRPF -->
-      <div class="servico" id="irpf" style="display:none;">
-        <h3>Declaração de IRPF</h3>
-        <ul>
-          <li>Informes de rendimentos</li>
-          <li>Comprovante de residência</li>
-          <li>Dependentes (se houver)</li>
-        </ul>
-        <p class="valor">Valor: R$ 350,00</p>
-      </div>
+      <p>Selecione um serviço para ver os detalhes.</p>
+      <!-- Os blocos dos serviços serão inseridos aqui dinamicamente -->
     </div>
   </main>
 
@@ -90,16 +41,63 @@
     <p>📌 Contato: Instagram | WhatsApp | Endereço</p>
   </footer>
 
-  <!-- Script para mostrar serviços -->
   <script>
     const select = document.getElementById("servicoSelect");
-    const servicos = document.querySelectorAll(".servico");
+    const infoBox = document.getElementById("infoBox");
 
-    select.addEventListener("change", function() {
-      servicos.forEach(s => s.style.display = "none");
-      const escolhido = document.getElementById(this.value);
-      if (escolhido) escolhido.style.display = "block";
+    async function carregarServicos() {
+      try {
+        const resposta = await fetch("https://back-end-tf-web-gamma.vercel.app/servico");
+        if (!resposta.ok) throw new Error("Falha ao buscar serviços");
+        const servicos = await resposta.json();
+
+        // Limpa o select e adiciona opções
+        select.innerHTML = '<option value="">-- Selecione --</option>';
+        servicos.forEach(s => {
+          const option = document.createElement("option");
+          option.value = s.id_servico; // Usa o ID como valor
+          option.textContent = s.nome;
+          select.appendChild(option);
+        });
+
+        // Cria os blocos de informação (escondidos por padrão)
+        infoBox.innerHTML = `
+          <h2>Informações</h2>
+          <p>Selecione um serviço para ver os detalhes.</p>
+        `;
+        servicos.forEach(s => {
+          const div = document.createElement("div");
+          div.id = `servico-${s.id_servico}`; // ID único
+          div.className = "servico";
+          div.style.display = "none"; // Esconde por padrão
+          div.innerHTML = `
+            <h3>${s.nome}</h3>
+            <p>${s.descricao || "Descrição não informada."}</p>
+            <p class="valor">Valor: R$ ${parseFloat(s.valor).toFixed(2)}</p>
+          `;
+          infoBox.appendChild(div);
+        });
+
+      } catch (erro) {
+        console.error(erro);
+        infoBox.innerHTML = "<h2>Erro</h2><p>Não foi possível carregar os serviços. Tente novamente mais tarde.</p>";
+      }
+    }
+
+    // Mostra o serviço selecionado
+    select.addEventListener("change", function () {
+      const todosServicos = document.querySelectorAll(".servico");
+      todosServicos.forEach(s => s.style.display = "none");
+
+      const idSelecionado = this.value;
+      if (idSelecionado) {
+        const servicoDiv = document.getElementById(`servico-${idSelecionado}`);
+        if (servicoDiv) servicoDiv.style.display = "block";
+      }
     });
+
+    // Carrega ao abrir a página
+    carregarServicos();
   </script>
 </body>
 </html>

@@ -1,76 +1,184 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Administração de Serviços - Caroba Contabilidade</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/admin-servicos.css">
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .admin-container {
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      color: #c81d1d;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .servicos-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .servicos-table th,
+    .servicos-table td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .servicos-table th {
+      background: #f9f9f9;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .servico-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-edit, .btn-delete {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      color: white;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .btn-edit {
+      background: #f4a300;
+    }
+    .btn-edit:hover {
+      background: #e69500;
+    }
+
+    .btn-delete {
+      background: #c81d1d;
+    }
+    .btn-delete:hover {
+      background: #b01919;
+    }
+
+    .valor {
+      font-weight: bold;
+      color: #047857;
+    }
+
+    @media (max-width: 768px) {
+      .servicos-table th,
+      .servicos-table td {
+        padding: 10px;
+        font-size: 14px;
+      }
+      .btn-edit, .btn-delete {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Cabeçalho -->
   <header>
     <div class="logo">
-      <img src="/images/image.png" alt="Caroba Contabilidade">
+      <img src="/images/image.png" alt="Caroba Contabilidade" />
     </div>
     <nav>
       <ul>
         <li><a href="/index.html">Início</a></li>
-        <li><a href="/servicos.html">Serviços</a></li>
-        <li><a href="/admin/login.html">Conectar</a></li>
-        <li><a href="/contrato.html">Contrato</a></li>
+        <li><a href="/servico.html">Serviços</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Conteúdo Principal -->
   <main>
     <div class="admin-container">
-      <div class="admin-box">
-        <h2>Gerenciar Serviços</h2>
-
-        <!-- Lista de serviços existentes -->
-        <div class="lista-servicos">
-          <h3>Serviços Cadastrados</h3>
-          <ul>
-            <li>
-              Abrir CNPJ - R$ 500 
-              <div>
-                <button class="editar"><a href="/admin/editar.html">Editar</a></button>
-                <button class="editar" style="background: red; color: white;">Excluir</button>
-              </div>
-            </li>
-            <li>
-              Pagar IPVA - R$ 150 
-              <div>
-                <button class="editar"><a href="/admin/editar.html">Editar</a></button>
-                <button class="editar" style="background: red; color: white;">Excluir</button>
-              </div>
-            </li>
-            <li>
-              Regularizar MEI - R$ 200 
-              <div>
-                <button class="editar"><a href="/admin/editar.html">Editar</a></button>
-                <button class="editar" style="background: red; color: white;">Excluir</button>
-              </div>
-            </li>
-            <li>
-              Declaração IRPF - R$ 350 
-              <div>
-                <button class="editar"> <a href="/admin/editar.html">Editar</a></button>
-                <button class="editar" style="background: red; color: white;">Excluir</button>
-              </div>
-            </li>
-          </ul>
-        </div>
-
+      <h2>Gerenciar Serviços</h2>
+      <div id="lista-servicos">
+        <p>Carregando serviços...</p>
       </div>
     </div>
   </main>
 
-  <!-- Rodapé -->
   <footer>
     <p>📌 Contato: Instagram | WhatsApp | Endereço</p>
   </footer>
+
+  <script>
+    const API_URL = "https://back-end-tf-web-gamma.vercel.app";
+
+    async function carregarServicos() {
+      try {
+        const res = await fetch(`${API_URL}/servico`);
+        if (!res.ok) throw new Error("Erro ao buscar serviços");
+        const servicos = await res.json();
+
+        const container = document.getElementById("lista-servicos");
+        if (servicos.length === 0) {
+          container.innerHTML = "<p>Nenhum serviço cadastrado.</p>";
+          return;
+        }
+
+        container.innerHTML = `
+          <table class="servicos-table">
+            <thead>
+              <tr>
+                <th>Serviço</th>
+                <th>Valor</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${servicos.map(s => `
+                <tr>
+                  <td>${s.nome}</td>
+                  <td class="valor">R$ ${parseFloat(s.valor).toFixed(2)}</td>
+                  <td>
+                    <div class="servico-item">
+                      <a href="/admin/editar.html?id=${s.id_servico}" class="btn-edit">Editar</a>
+                      <button class="btn-delete" onclick="excluirServico(${s.id_servico})">Excluir</button>
+                    </div>
+                  </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+      } catch (err) {
+        console.error(err);
+        document.getElementById("lista-servicos").innerHTML = `<p>Erro: ${err.message}</p>`;
+      }
+    }
+
+    async function excluirServico(id) {
+      if (!confirm("Tem certeza que deseja excluir este serviço?")) return;
+      try {
+        await fetch(`${API_URL}/servico/${id}`, { method: "DELETE" });
+        carregarServicos(); // Recarrega a lista
+      } catch (err) {
+        alert("Erro ao excluir serviço.");
+      }
+    }
+
+    carregarServicos();
+  </script>
+  <script>
+  if (!localStorage.getItem("adminLogado")) {
+    alert("Acesso restrito. Faça login primeiro.");
+    window.location.href = "/admin/login.html";
+  }
+</script>
 </body>
 </html>
