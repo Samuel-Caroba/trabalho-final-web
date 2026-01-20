@@ -46,7 +46,6 @@ A área administrativa é protegida por login. Use as credenciais abaixo:
 - **Formulário de edição** com checkbox **"Popular"** (define se aparece na página inicial)
 
 #### ✅ Design Responsivo
-- Layout adaptável para mobile e desktop
 - Cores institucionais: amarelo (`#f4a300`), vermelho (`#c81d1d`) e preto (`#111`)
 
 ---
